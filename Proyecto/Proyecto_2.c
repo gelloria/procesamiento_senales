@@ -7,7 +7,7 @@
 #define M_PI 3.14159265358979324
 #endif
 
-#define N 32
+#define N 64
 
 int import_txt_file(kiss_fft_scalar in[N]){
 
