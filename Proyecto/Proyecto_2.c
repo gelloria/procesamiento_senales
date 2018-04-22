@@ -7,7 +7,57 @@
 #define M_PI 3.14159265358979324
 #endif
 
-#define N 16
+#define N 32
+
+int import_txt_file(kiss_fft_scalar in[N]){
+
+    FILE *myFile;
+    myFile = fopen("testA.txt", "r");
+
+    //read file into array
+    float numberArray[N];
+    int i;
+
+    if (myFile == NULL){
+        printf("Error Reading File\n");
+        exit (0);
+    }
+
+    for (i = 0; i < N; i++){
+        fscanf(myFile, "%f,", &numberArray[i] );
+        in[i] = numberArray[i];
+    }
+
+    fclose(myFile);
+
+    return 0;
+}
+
+int export_txt_file(const kiss_fft_scalar in[N], kiss_fft_cpx out[N]){
+
+    FILE *myFile;
+    myFile = fopen("testA_out.txt", "w");
+
+    int i;
+    if (myFile == NULL){
+        printf("Error Reading File\n");
+        exit (0);
+    }
+
+    for (i = 0; i < N; i++)
+    {
+      fprintf(myFile, "%d, %f , ", i, in[i]);
+      if (i < N / 2 + 1){
+        fprintf(myFile, "%f , %f \n", out[i].r, out[i].i);
+      }else{
+        fprintf(myFile,"\n");
+      }
+    }
+
+    fclose(myFile);
+
+    return 0;
+}
 
 void TestFftReal(const char* title, const kiss_fft_scalar in[N], kiss_fft_cpx out[N / 2 + 1])
 {
@@ -43,17 +93,11 @@ int main(void)
   kiss_fft_cpx out[N / 2 + 1];
   size_t i;
 
-  for (i = 0; i < N; i++)
-    in[i] = 0;
-  TestFftReal("Zeroes (real)", in, out);
+  import_txt_file(in);
 
-  for (i = 0; i < N; i++)
-    in[i] = 1;
-  TestFftReal("Ones (real)", in, out);
+  TestFftReal("PARAMETERS OF THE RECIEVED FILES", in, out);
 
-  for (i = 0; i < N; i++)
-    in[i] = sin(2 * M_PI * 4 * i / N);
-  TestFftReal("SineWave (real)", in, out);
+  export_txt_file(in, out);
 
   return 0;
 }
