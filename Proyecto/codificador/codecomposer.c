@@ -23,7 +23,7 @@ char uquant(float max, int bits, char qNum)
 {
 	int intMax = trunc(max);
 	int intBits = round(log2(intMax));
-	int intMaxTmp = 2^intBits;
+	int intMaxTmp = pow(2,intBits);
 
 	if(intMaxTmp < intMax)
 	{
@@ -35,7 +35,7 @@ char uquant(float max, int bits, char qNum)
 	int tmpNum = (int)qNum;
 
 	float num;
-	num = tmpNum/2^decBits;
+	num = tmpNum/pow(2,decBits);
 
 	return num;
 }
@@ -259,4 +259,3 @@ void main()
 
    fclose(fid);
 }
-
